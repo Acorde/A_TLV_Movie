@@ -1,65 +1,72 @@
-package com.igor.movies;
+package com.igor.movies.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.igor.movies.R;
+import com.igor.movies.presenters.movieListScreenPresenter.MovieListPresenter;
+import com.igor.movies.presenters.movieListScreenPresenter.MovieListContract;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MoviesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MoviesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class MoviesFragment extends BaseFragment implements MovieListContract.View {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @BindView(R.id.movie_list_RecyclerView)
+    RecyclerView movie_list_RecyclerView;
+    @BindView(R.id.movie_list_WTRL)
+    SwipeRefreshLayout movie_list_WTRL;
 
+    MovieListPresenter presenter;
 
     public MoviesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MoviesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MoviesFragment newInstance(String param1, String param2) {
-        MoviesFragment fragment = new MoviesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies, container, false);
+        mView = inflater.inflate(R.layout.fragment_movies, container, false);
+        ButterKnife.bind(this, mView);
+        setPresenter();
+
+        return mView;
     }
 
+    @Override
+    public void viewInit() {
+
+    }
+
+    @Override
+    public void setPresenter() {
+        presenter = new MovieListPresenter();
+        presenter.attach(this);
+        presenter.setRecyclerView(movie_list_RecyclerView);
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return getContext();
+    }
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
 }

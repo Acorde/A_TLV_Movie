@@ -1,6 +1,6 @@
 package com.igor.movies.interfaces;
 
-public interface NetworkCallback<T> {
+public interface NetworkResponse<T> {
 
 
     void onSuccess(T data);

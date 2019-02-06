@@ -1,4 +1,4 @@
-package com.igor.movies.presenters.movieDetailsScreen;
+package com.igor.movies.presenters.movieDetailsScreenPresenter;
 
 import com.igor.movies.presenters.BasePresenter;
 

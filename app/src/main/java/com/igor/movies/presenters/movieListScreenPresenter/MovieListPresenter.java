@@ -3,18 +3,26 @@ package com.igor.movies.presenters.movieListScreenPresenter;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import com.igor.movies.interfaces.NetworkResponse;
+import com.igor.movies.interfaces.OnAdapterItemClicked;
 import com.igor.movies.modules.Movie;
 import com.igor.movies.presenters.BasePresenter;
 import com.igor.movies.ui.adapters.MoviesListAdapter;
 
+
 import java.util.ArrayList;
 
-public class MovieLisrPresenter extends BasePresenter<MovieListContract.View> implements MovieListContract.Presenter {
+public class MovieListPresenter extends BasePresenter<MovieListContract.View> implements MovieListContract.Presenter, OnAdapterItemClicked {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private MoviesListAdapter adapter;
     private ArrayList<Movie> movieArrayList;
+
+
+    public MovieListPresenter() {
+        getDataFromServer();
+    }
 
 
     @Override
@@ -51,9 +59,34 @@ public class MovieLisrPresenter extends BasePresenter<MovieListContract.View> im
     }
 
     @Override
-    public void evaluateRecyclerView() {
+    public void setRecyclerViewAdapter(ArrayList<Movie> moviesList) {
+        if (adapter == null) {
+            adapter = new MoviesListAdapter(moviesList, getmView().getContext(), this);
+        }
+
+        recyclerView.setAdapter(adapter);
 
     }
 
+    @Override
+    public void getDataFromServer() {
 
+        MovieListRepository.getInstance().getMovies(new NetworkResponse() {
+            @Override
+            public void onSuccess(Object data) {
+                setRecyclerViewAdapter((ArrayList<Movie>) data);
+            }
+
+            @Override
+            public void onFailure(Object data) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void OnItemClicked(int pos) {
+
+    }
 }

@@ -1,4 +1,6 @@
 package com.igor.movies.interfaces;
 
-public class OnAdapterItemClicked {
+public interface OnAdapterItemClicked {
+
+    void OnItemClicked(int pos);
 }
